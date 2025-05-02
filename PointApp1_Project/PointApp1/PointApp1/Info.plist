@@ -58,13 +58,16 @@
     </array>
     <!-- Google Mobile Ads SDK App ID -->
     <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-1234567890123456~1234567890</string> <!-- ユーザー指定のアプリID -->
+    <string>ca-app-pub-9512668567534376~6466526333</string> <!-- 実際のアプリID -->
     <!-- Google Mobile Ads Test Device Identifiers -->
     <key>GADTestDeviceIdentifiers</key>
     <array>
-        <string>ABCD1234EFGH5678</string> <!-- ユーザー指定のテストデバイスID -->
+        <string>ABCD1234EFGH5678</string> <!-- テスト用デバイスID、実際のデバイスIDに置き換え可能 -->
         <!-- 必要に応じて他のテストデバイスIDを追加 -->
     </array>
+    <!-- App Tracking Transparency -->
+    <key>NSUserTrackingUsageDescription</key>
+    <string>このアプリはより関連性の高い広告を表示するために、あなたのデータを使用します。</string>
     <!-- 必要なプライバシー権限はなし -->
 </dict>
 </plist>

@@ -25,8 +25,8 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
     // ポイント管理マネージャーへの参照
     private weak var pointManager: PointManager?
 
-    // 広告ユニットID (ユーザー指定の値に置き換え)
-    private let adUnitID = "ca-app-pub-3940256099942544/1712485313" // テスト用ID。本番用は "ca-app-pub-1234567890123456/1234567"
+    // 広告ユニットID
+    private let adUnitID = "ca-app-pub-9512668567534376/6713938344"
 
     init(pointManager: PointManager) {
         self.pointManager = pointManager
