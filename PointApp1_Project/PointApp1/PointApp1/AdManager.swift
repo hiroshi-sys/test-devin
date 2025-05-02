@@ -26,7 +26,7 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
     private weak var pointManager: PointManager?
 
     // 広告ユニットID
-    private let adUnitID = "ca-app-pub-3940256099942544/1712485313"
+    private let adUnitID = "ca-app-pub-9512668567534376/6713938344"
 
     init(pointManager: PointManager) {
         self.pointManager = pointManager

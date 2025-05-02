@@ -58,7 +58,7 @@
     </array>
     <!-- Google Mobile Ads SDK App ID -->
     <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-3940256099942544~1458002511</string> <!-- テスト用アプリID、本番環境では実際のIDに置き換え -->
+    <string>ca-app-pub-9512668567534376~6466526333</string> <!-- 実際のアプリID -->
     <!-- Google Mobile Ads Test Device Identifiers -->
     <key>GADTestDeviceIdentifiers</key>
     <array>
