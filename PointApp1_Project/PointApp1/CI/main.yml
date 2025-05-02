@@ -1,0 +1,113 @@
+# GitHub Actions Workflow for PointApp1 CI/CD
+
+name: PointApp1 CI/CD
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ main ] # Trigger on push to the main branch
+  pull_request:
+    branches: [ main ] # Trigger on pull requests targeting the main branch
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    name: Build and Test
+    runs-on: macos-latest # Use the latest available macOS runner
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Selects the Xcode version to use (Adjust version as needed, e.g., 13.4.1)
+      # Ensure this matches the Xcode version used for development
+      - name: Select Xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '13.4.1' # Specify Xcode 13 or later
+
+      # Installs required tools if needed (e.g., Fastlane)
+      # - name: Install Fastlane
+      #   run: brew install fastlane
+
+      # Resolve Swift Package Manager dependencies
+      # Xcode usually handles this automatically during build, but explicit step can be useful
+      # - name: Resolve Swift Packages
+      #   run: xcodebuild -resolvePackageDependencies -workspace PointApp1.xcworkspace -scheme PointApp1 # Adjust workspace/scheme if needed
+
+      # Build the application
+      # Replace 'PointApp1.xcodeproj' and 'PointApp1' with your actual project/scheme names if different
+      # You might need to specify -workspace instead of -project if you use workspaces
+      - name: Build App
+        run: |
+          xcodebuild build \
+            -project PointApp1.xcodeproj \
+            -scheme PointApp1 \
+            -destination 'generic/platform=iOS' \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO
+        working-directory: ./PointApp1 # Adjust if your xcodeproj is in a different location
+
+      # Run Unit Tests
+      # Requires a simulator destination. Adjust scheme and simulator details as needed.
+      - name: Run Tests
+        run: |
+          xcodebuild test \
+            -project PointApp1.xcodeproj \
+            -scheme PointApp1 \
+            -destination 'platform=iOS Simulator,name=iPhone 13,OS=15.5' # Adjust simulator/OS
+        working-directory: ./PointApp1 # Adjust if your xcodeproj is in a different location
+
+  # Placeholder for Deployment Job
+  deploy_to_app_store:
+    name: Deploy to App Store Connect
+    needs: build_and_test # Run only if build_and_test succeeds
+    runs-on: macos-latest
+    # Only run this job on pushes to the main branch, not on pull requests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '13.4.1'
+
+      # --- User Configuration Required Below --- 
+      # This section requires secrets (API Keys, Certificates, Profiles) to be configured in GitHub repository settings
+      # It's highly recommended to use Fastlane for managing signing and deployment
+
+      # Example using Fastlane (Requires Fastlane setup in the project)
+      # - name: Install Fastlane
+      #   run: brew install fastlane
+
+      # - name: Set up Fastlane Match (Code Signing)
+      #   env:
+      #     MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }} # Secret for decryption
+      #     MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.GIT_AUTH_TOKEN }} # Token for private cert repo
+      #     FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }}
+      #   run: bundle exec fastlane match appstore --readonly
+
+      # - name: Build and Upload to TestFlight
+      #   env:
+      #     FASTLANE_USER: ${{ secrets.APPLE_ID_EMAIL }}
+      #     FASTLANE_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }} # Or use API Key
+      #     FASTLANE_APP_IDENTIFIER: "com.example.PointApp1" # Your Bundle ID
+      #     APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+      #     APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+      #     APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+      #   run: bundle exec fastlane beta
+
+      - name: Placeholder Deployment Step
+        run: |
+          echo "Deployment job placeholder."
+          echo "Configure your deployment steps here (e.g., using Fastlane)."
+          echo "Ensure necessary secrets (API Keys, certificates, provisioning profiles) are set in GitHub repository secrets."
+          echo "Refer to Fastlane or Xcode Cloud documentation for App Store Connect deployment."
+
+
