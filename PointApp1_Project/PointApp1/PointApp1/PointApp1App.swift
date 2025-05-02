@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import FirebaseCore
+import Firebase
 import GoogleMobileAds // AdMob初期化のため
 
 class AppDelegate: NSObject, UIApplicationDelegate {
